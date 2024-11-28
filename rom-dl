@@ -57,7 +57,7 @@ tui() {
     clear
     combo="$genis"; aria2_fun; exit
   else
-				check
+    check
   fi
 done
 }
