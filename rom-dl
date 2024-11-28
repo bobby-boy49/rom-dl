@@ -35,6 +35,12 @@ henis() {
  curl -sA "$agent" "$wombo" | grep "href=" | grep -i "$combo" | awk -v w="$wombo" '{gsub(/<tr><td class="link"><a href="/,w); print}' | grep "$wombo" | awk -F '"' '{print $1}' | sed '/<tbody>/d'
 }
 
+check() {
+if [ $(printf "${url: -1}") != / ]; then
+    aria2c -U "$agent" "$url"; exit
+fi
+}
+
 tui() {  
   clear
   while true; do
@@ -50,8 +56,8 @@ tui() {
     read -p "Scraping Term: " -r genis
     clear
     combo="$genis"; aria2_fun; exit
-  elif [ $(printf "${url: -1}") != / ]; then
-    aria2c -U "$agent" "$url"; exit
+  else
+				check
   fi
 done
 }
@@ -61,7 +67,9 @@ dhenis() {
 }
 
 aria2_fun() {
-  dhenis > dlcache.txt && aria2c -U "$agent" -i dlcache.txt
+  url="$wombo"
+		check
+		dhenis > dlcache.txt && aria2c -U "$agent" -i dlcache.txt
   grep '.zip' dlcache.txt > /dev/null
   if [ $? = 0 ]; then
     comdo='.zip'
