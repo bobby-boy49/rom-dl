@@ -37,7 +37,7 @@ henis() {
 
 check() {
 if [ $(printf "${url: -1}") != / ]; then
-    aria2c -U "$agent" "$url"; exit
+  aria2c -U "$agent" "$url"; exit
 fi
 }
 
