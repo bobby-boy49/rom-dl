@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/env bash
 
 benis() {
 printf "
@@ -27,7 +27,15 @@ please="Please use a option."
 
 url="https://myrient.erista.me/files/"
 
-if [ $# -eq 0 ]; then
+if [ $(which aria2c >/dev/null; printf "$?") -gt 0 ]; then
+  printf "You are missing a dependency: aria2\n"
+fi
+
+if [ $(which fzf >/dev/null; printf "$?") -gt 0 ]; then
+  printf "You are missing a dependency: fzf"
+fi
+
+if [ $# = 0 ]; then
   printf "\n$(ibenis)\n\n"; exit
 fi
 
