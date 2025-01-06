@@ -40,7 +40,13 @@ if [ $# = 0 ]; then
 fi
 
 henis() {
- curl -sA "$agent" "$wombo" | grep "href=" | grep -i "$combo" | awk -v w="$wombo" '{gsub(/<tr><td class="link"><a href="/,w); print}' | grep "$wombo" | awk -F '"' '{print $1}' | sed '/<tbody>/d'
+ curl -sA "$agent" "$wombo" \
+   | grep "href=" \
+   | grep -i "$combo" \
+   | awk -v w="$wombo" '{gsub(/<tr><td class="link"><a href="/,w); print}' \
+   | grep "$wombo" \
+   | awk -F '"' '{print $1}' \
+   | sed '/<tbody>/d'
 }
 
 check() {
@@ -53,7 +59,10 @@ tui() {
   clear
   while true; do
   wombo="$url"
-  url="$(printf "%b" "Exit\nBack\nDownload!\n$(henis)" | sed 's/%20/ /g; s/https:\/\/myrient\.erista\.me\//\.\.\//g' | fzf --layout=reverse | sed 's/\.\.\//https:\/\/myrient\.erista\.me\//g; s/ /%20/g')"
+  url="$(printf "%b" "Exit\nBack\nDownload!\n$(henis)" \
+    | sed 's/%20/ /g; s/https:\/\/myrient\.erista\.me\//\.\.\//g' \
+    | fzf --layout=reverse \
+    | sed 's/\.\.\//https:\/\/myrient\.erista\.me\//g; s/ /%20/g')"
   if [ $url = Back ]; then
     url="https://myrient.erista.me/files/"
   elif [ $url = Exit ]; then
@@ -71,7 +80,10 @@ done
 }
 
 dhenis() {
-  printf "\n$(benis)\n\nThis May Take A Minute...\n" 1>&2 && curl -vsA "$agent" $(henis) 2>&1 | grep '< location:' | awk '{print $3}' | tr -d '\r'
+  printf "\n$(benis)\n\nThis May Take A Minute...\n" 1>&2 && curl -vsA "$agent" $(henis) 2>&1 \
+    | grep '< location:' \
+    | awk '{print $3}' \
+    | tr -d '\r'
 }
 
 aria2_fun() {
@@ -89,7 +101,8 @@ fenis
 fenis() {
   if printf "%s" "$comdo" | grep '.zip' > /dev/null; then
   clear
-  printf "Do you want to extract and remove zip(s)? (y/n) *This will 'EXTRACT' and or 'DELETE' other zip files that may be in the directory*\n\n"
+  printf "Do you want to extract and remove zip(s)? \
+(y/n) *This will 'EXTRACT' and or 'DELETE' other zip files that may be in the directory*\n\n"
   read -r gombo
   case "$gombo" in
     y|Y) unzip '*.zip' && rm *.zip;;
