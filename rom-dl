@@ -55,6 +55,17 @@ if [ $(printf "${url: -1}") != / ]; then
 fi
 }
 
+check2() {
+printf "\n$(benis)\n\nDoing a check. This May Take A Minute...\n\n"
+str="$(henis)"
+clear
+for sstr in "${str[@]}"; do
+  if [ $(printf %b "${sstr: -1}") = / ]; then
+    printf "\n$(benis)\n\nDirectory's not supported!\n\n"; exit
+  fi
+done
+}
+
 tui() {  
   clear
   while true; do
@@ -89,6 +100,7 @@ dhenis() {
 aria2_fun() {
   url="$wombo"
   check
+  check2
   dhenis > dlcache.txt && aria2c -U "$agent" -i dlcache.txt
   grep '.zip' dlcache.txt > /dev/null
   if [ $? = 0 ]; then
