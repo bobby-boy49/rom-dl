@@ -100,6 +100,7 @@ dhenis() {
 aria2_fun() {
   url="$wombo"
   check
+  clear
   check2
   dhenis > dlcache.txt && aria2c -U "$agent" -i dlcache.txt
   grep '.zip' dlcache.txt > /dev/null
