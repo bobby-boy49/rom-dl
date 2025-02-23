@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+
+benis() {
+printf "
+______  ___              _____            _____ 
+___   |/  /____  ___________(_)_____________  /_
+__  /|_/ /__  / / /_  ___/_  /_  _ \_  __ \  __/
+_  /  / / _  /_/ /_  /   _  / /  __/  / / / /_  
+/_/  /_/  _\__, / /_/    /_/  \___//_/ /_/\__/  
+          /____/                                
+                               Downloader Script
+"
+}
+
+ibenis() {
+benis
+printf "
+  s) Scraping Term
+  d) Download
+  t) TUI
+"
+}
+
+agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
+
+please="Please use a option."
+
+url="https://myrient.erista.me/files/"
+
+if [ $# = 0 ]; then
+  printf "\n$(ibenis)\n\n"; exit
+fi
+
+henis() {
+ curl -sA "$agent" "$wombo" \
+   | grep "href=" \
+   | grep -i "$combo" \
+   | awk -v w="$wombo" '{gsub(/<tr><td class="link"><a href="/,w); print}' \
+   | grep "$wombo" \
+   | awk -F '"' '{print $1}' \
+   | sed '/<tbody>/d'
+}
+
+check() {
+if [ $(printf "${url: -1}") != / ]; then
+  wget "$url"; comdo="$url"; fenis; exit
+fi
+}
+
+check2() {
+printf "\n$(benis)\n\nDoing a check. This May Take A Minute...\n\n"
+str="$(henis)"
+clear
+for sstr in "${str[@]}"; do
+  if [ $(printf %b "${sstr: -1}") = / ]; then
+    printf "\n$(benis)\n\nDirectory's not supported!\n\n"; exit
+  fi
+done
+}
+
+tui() { 
+  clear
+  while true; do
+  wombo="$url"
+  url="$(printf "%b" "Exit\nBack\nDownload!\n$(henis)" \
+    | sed 's/%20/ /g; s/https:\/\/myrient\.erista\.me\//\.\.\//g' \
+    | fzf --layout=reverse \
+    | sed 's/\.\.\//https:\/\/myrient\.erista\.me\//g; s/ /%20/g')"
+  if [ $url = Back ]; then
+    url="https://myrient.erista.me/files/"
+  elif [ $url = Exit ]; then
+    exit
+  elif [ $url = 'Download!' ]; then
+    clear
+    printf "\n$(benis)\n\nJust hit enter if you want to download all.\n\n"
+    read -p "Scraping Term: " -r genis
+    clear
+    combo="$genis"; aria2_fun; exit
+  else
+    check
+  fi
+done
+}
+
+aria2_fun() {
+  url="$wombo"
+  check
+  clear
+  check2
+  henis > dlcache.txt
+  for i in $(cat dlcache.txt); do
+    wget "$i"
+  done
+  grep '.zip' dlcache.txt > /dev/null
+  if [ $? = 0 ]; then
+    comdo='.zip'
+  fi
+  rm dlcache.txt
+fenis
+}
+
+fenis() {
+  if printf "%s" "$comdo" | grep '.zip' > /dev/null; then
+  clear
+  printf "Do you want to extract and remove zip(s)? \
+(y/n) *This will 'EXTRACT' and or 'DELETE' other zip files that may be in the directory*\n\n"
+  read -r gombo
+  case "$gombo" in
+    y|Y) unzip '*.zip' && rm *.zip;;
+    n|N) printf "Ok then.\n";;
+      *) printf "Umm.. ok I'll just pick no...\n";;
+  esac
+  clear
+  printf "Done! :-p\n"
+fi
+}
+
+while getopts "s:d:th" denis; do
+case "$denis" in
+  s) combo="$OPTARG" 
+  ;;
+  d) wombo="$OPTARG"; aria2_fun; exit
+  ;;
+  t) tui; exit
+  ;;
+  h) printf "\n$(ibenis)\n\n"
+  ;;
+  *) printf "\nSorry I didn't get that.\n\n$please\n\n"
+  ;;
+esac  
+done
