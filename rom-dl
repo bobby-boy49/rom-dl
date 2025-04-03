@@ -92,7 +92,7 @@ done
 
 dhenis() {
   printf "\n$(benis)\n\nThis May Take A Minute...\n" 1>&2 && curl -vsA "$agent" $(henis) 2>&1 \
-    | grep '< location:' \
+    | grep -i '< Location:' \
     | awk '{print $3}' \
     | tr -d '\r'
 }
