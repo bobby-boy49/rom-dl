@@ -53,7 +53,7 @@ str="$(henis)"
 clear
 for sstr in "${str[@]}"; do
   if [ $(printf %b "${sstr: -1}") = / ]; then
-    printf "\n$(benis)\n\nDirectory's not supported!\n\n"; exit
+    printf "\n$(benis)\n\nDirectories not supported!\n\n"; exit
   fi
 done
 }
