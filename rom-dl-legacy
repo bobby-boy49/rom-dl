@@ -43,7 +43,7 @@ henis() {
 
 check() {
 if [ $(printf "${url: -1}") != / ]; then
-  wget "$url"; comdo="$url"; fenis; exit
+  clear; wget "$url"; comdo="$url"; fenis; exit
 fi
 }
 
