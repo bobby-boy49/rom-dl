@@ -21,7 +21,7 @@ printf "
 "
 }
 
-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.48 Safari/537.36"
+agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0"
 
 please="Please use a option."
 
@@ -70,12 +70,14 @@ tui() {
   clear
   while true; do
   wombo="$url"
-  url="$(printf "%b" "Exit\nBack\nDownload!\n$(henis)" \
+  url="$(printf "%b" "Exit\nBack\nLast\nDownload!\n$(henis)" \
     | sed 's/%20/ /g; s/https:\/\/myrient\.erista\.me\//\.\.\//g' \
     | fzf --layout=reverse \
     | sed 's/\.\.\//https:\/\/myrient\.erista\.me\//g; s/ /%20/g')"
   if [ $url = Back ]; then
     url="https://myrient.erista.me/files/"
+  elif [ $url = Last ]; then
+    url="$last"
   elif [ $url = Exit ]; then
     exit
   elif [ $url = 'Download!' ]; then
@@ -87,6 +89,7 @@ tui() {
   else
     check
   fi
+    last="$wombo"
 done
 }
 
