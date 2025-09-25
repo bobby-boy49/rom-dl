@@ -46,7 +46,7 @@ henis() {
    | awk -v w="$wombo" '{gsub(/<tr><td class="link"><a href="/,w); print}' \
    | grep "$wombo" \
    | awk -F '"' '{print $1}' \
-   | sed '/<tbody>/d'
+   | sed '/<tbody>/d; /\/.\//d; /\/..\//d'
 }
 
 check() {
