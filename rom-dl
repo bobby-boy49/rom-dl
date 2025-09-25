@@ -21,7 +21,7 @@ printf "
 "
 }
 
-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0"
+agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.48 Safari/537.36"
 
 please="Please use a option."
 
@@ -51,7 +51,7 @@ henis() {
 
 check() {
 if [ $(printf "${url: -1}") != / ]; then
-  aria2c -U "$agent" "$url"; comdo="$url"; fenis; exit
+  aria2c "$url"; comdo="$url"; fenis; exit
 fi
 }
 
@@ -188,17 +188,17 @@ aria2_fun() {
   check
   clear
   check2
-  dhenis > dlcache.txt && aria2c -U "$agent" -i dlcache.txt
-  grep '.zip' dlcache.txt > /dev/null
+  printf "\n$(benis)\n\nDownloading...\n"
+  aria2c -i <(henis)
+  grep '.zip' <(henis) >/dev/null
   if [ $? = 0 ]; then
     comdo='.zip'
   fi
-  rm dlcache.txt
 fenis
 }
 
 fenis() {
-  if printf "%s" "$comdo" | grep '.zip' > /dev/null; then
+  if printf "%s" "$comdo" | grep '.zip' >/dev/null; then
   clear
   printf "Do you want to extract and remove zip(s)? \
 (y/n) *This will 'EXTRACT' and or 'DELETE' other zip files that may be in the directory*\n\n"
