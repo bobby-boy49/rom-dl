@@ -58,12 +58,15 @@ fi
 check2() {
 printf "\n$(benis)\n\nDoing a check. This May Take A Minute...\n\n"
 str="$(henis)"
+sstr() {
+printf %b "$str\n"
+}
+total_urls="$(sstr | wc -l)"
+trailing_urls="$(grep -c '/$' <(sstr))"
 clear
-for sstr in "${str[@]}"; do
-  if [ $(printf %b "${sstr: -1}") = / ]; then
-    printf "\n$(benis)\n\nDirectories not supported!\n\n"; exit
-  fi
-done
+if [ $total_urls -gt 0 ] && [ $trailing_urls -eq $total_urls ]; then
+  printf "\n$(benis)\n\nDirectories not supported!\n\n"; exit
+fi
 }
 
 check3() {
@@ -189,8 +192,8 @@ aria2_fun() {
   clear
   check2
   printf "\n$(benis)\n\nDownloading...\n"
-  aria2c -i <(henis)
-  grep '.zip' <(henis) >/dev/null
+  aria2c -i <(grep -v '/$' <(sstr))
+  grep '.zip' <(sstr) >/dev/null
   if [ $? = 0 ]; then
     comdo='.zip'
   fi
