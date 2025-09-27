@@ -101,7 +101,7 @@ aria2_fun() {
   clear
   check2
   printf "\n$(benis)\n\nDownloading...\n"
-  for i in $(grep -v '/$' sstr); do
+  for i in $(grep -v '/$' <(sstr)); do
     wget "$i"
   done
   grep '.zip' <(sstr) >/dev/null
