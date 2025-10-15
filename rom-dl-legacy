@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This is the legacy build of the script I still update this one for machines that don't have aria2.
+# This is the legacy build of the script. I still update this one for machines that don't have aria2.
 # Useful for things like raspberry pi's with retropie installed. You can install this script to retropie
 # by installing it to /usr/local/bin so you can use it in the shell.
 
