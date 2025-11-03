@@ -41,9 +41,8 @@ henis() {
  curl -sA "$agent" "$wombo" \
    | grep "href=" \
    | grep -i "$combo" \
-   | awk -v w="$wombo" '{gsub(/<tr><td class="link"><a href="/,w); print}' \
+   | awk -v w="$wombo" '{gsub(/<tr><td class="link"><a href="/, w); split($0, a, "\""); print a[1]}' \
    | grep "$wombo" \
-   | awk -F '"' '{print $1}' \
    | sed '/<tbody>/d; /\/.\//d; /\/..\//d'
 }
 
