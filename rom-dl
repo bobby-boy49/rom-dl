@@ -154,14 +154,24 @@ printf '
   fi
 }
 
+decode_u() {
+  perl -pe 's/\%([0-9A-Fa-f]{2})/chr(hex($1))/ge'
+}
+
+encode_u() {
+  perl -pe 's/([^A-Za-z0-9\-\._~\/\n!])/sprintf("%%%02X", ord($1))/ge'
+}
+
 tui() {
   clear
   while true; do
   wombo="$url"
   url_s="$(printf "%b" "Exit\nBack\nLast\nDownload!\n$(henis)" \
-    | sed "s|$wombo|../|g; s/%20/ /g" \
+    | decode_u \
+    | sed "s|^$wombo|../|g" \
     | fzf --layout=reverse \
-    | sed "s/ /%20/g; s|^../||g")"
+    | sed "s|^../||g" \
+    | encode_u)"
   if [ "$url_s" = Back ]; then
     url="https://myrient.erista.me/files/"
   elif [ "$url_s" = Last ]; then
