@@ -79,7 +79,7 @@ tui() {
   clear
   while true; do
   wombo="$url"
-  decode_w="$(printf "%s" "$wombo" | decode_u | sed 's/[][\/.^$*+?{}|&]/\\&/g')"
+  decode_w="$(printf "%s" "$wombo" | decode_u | sed 's/[][\/.^$*?{}|&]/\\&/g')"
   url_s="$(printf "%b" "Exit\nBack\nLast\nDownload!\n$(henis)" \
     | decode_u \
     | sed "s|^$decode_w|../|g" \
