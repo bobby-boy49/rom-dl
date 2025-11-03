@@ -162,19 +162,21 @@ tui() {
     | sed "s|$wombo|../|g; s/%20/ /g" \
     | fzf --layout=reverse \
     | sed "s/ /%20/g; s|^../||g")"
-  if [ $url_s = Back ]; then
+  if [ "$url_s" = Back ]; then
     url="https://myrient.erista.me/files/"
-  elif [ $url_s = Last ]; then
+  elif [ "$url_s" = Last ]; then
     url="$last"
     check3
-  elif [ $url_s = Exit ]; then
+  elif [ "$url_s" = Exit ]; then
     exit
-  elif [ $url_s = 'Download!' ]; then
+  elif [ "$url_s" = 'Download!' ]; then
     clear
     printf "\n$(benis)\n\nJust hit enter if you want to download all.\n\n"
     read -p "Scraping Term: " -r genis
     clear
     combo="$genis"; aria2_fun; exit
+  elif [ -z "$url_s" ]; then
+    :
   else
     url="$wombo$url_s"
     check
