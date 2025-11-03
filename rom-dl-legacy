@@ -89,7 +89,6 @@ tui() {
     url="https://myrient.erista.me/files/"
   elif [ "$url_s" = Last ]; then
     url="$last"
-    check3
   elif [ "$url_s" = Exit ]; then
     exit
   elif [ "$url_s" = 'Download!' ]; then
