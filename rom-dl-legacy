@@ -99,7 +99,7 @@ tui() {
     printf "\n$(benis)\n\nJust hit enter if you want to download all.\n\n"
     read -p "Scraping Term: " -r genis
     clear
-    combo="$genis"; aria2_fun; exit
+    combo="$genis"; wget_fun; exit
   elif [ -z "$url_s" ]; then
     :
   else
