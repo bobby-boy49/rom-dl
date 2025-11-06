@@ -48,7 +48,10 @@ henis() {
 
 check() {
 if [ $(printf "${url: -1}") != / ]; then
-  wget "$url"; comdo="$url"; fenis; exit
+  wget "$url"
+  comdo="$url"
+  down_f="$(basename $url | decode_u)"
+  fenis; exit
 fi
 }
 
@@ -114,13 +117,15 @@ dhenis() {
     | tr -d '\r'
 }
 
-aria2_fun() {
+wget_fun() {
   url="$wombo"
   check
   clear
   check2
   printf "\n$(benis)\n\nDownloading...\n"
-  for i in $(grep -v '/$' <(sstr)); do
+  down_u="$(grep -v '/$' <(sstr))"
+  down_f="$(basename -a $down_u | decode_u)"
+  for i in $down_u; do
     wget "$i"
   done
   grep '.zip' <(sstr) >/dev/null
@@ -131,13 +136,16 @@ fenis
 }
 
 fenis() {
+  zip_e() {
+    printf "%s" "$down_f" | grep -i '\.zip$'
+  }
   if printf "%s" "$comdo" | grep '.zip' >/dev/null; then
   clear
   printf "Do you want to extract and remove zip(s)? \
 (y/n) *This will 'EXTRACT' and or 'DELETE' other zip files that may be in the directory*\n\n"
   read -r gombo
   case "$gombo" in
-    y|Y) unzip '*.zip' && rm *.zip;;
+    y|Y) zip_e | xargs -d '\n' -I {} unzip "{}" && zip_e | xargs -d '\n' -I {} rm "{}";;
     n|N) printf "Ok then.\n";;
       *) printf "Umm.. ok I'll just pick no...\n";;
   esac
@@ -150,7 +158,7 @@ while getopts "s:d:th" denis; do
 case "$denis" in
   s) combo="$OPTARG" 
   ;;
-  d) wombo="$OPTARG"; aria2_fun; exit
+  d) wombo="$OPTARG"; wget_fun; exit
   ;;
   t) tui; exit
   ;;
