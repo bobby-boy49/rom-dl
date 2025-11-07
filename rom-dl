@@ -228,8 +228,7 @@ fenis() {
   }
   if printf "%s" "$comdo" | grep '.zip' >/dev/null; then
   clear
-  printf "Do you want to extract and remove zip(s)? \
-(y/n) *This will 'EXTRACT' and or 'DELETE' other zip files that may be in the directory*\n\n"
+  printf "Do you want to extract and remove zip(s)? (y/n)\n\n"
   read -r gombo
   case "$gombo" in
     y|Y) zip_e | xargs -d '\n' -I {} unzip "{}" && zip_e | xargs -d '\n' -I {} rm "{}";;
