@@ -1,0 +1,249 @@
+#!/usr/bin/env bash
+
+benis() {
+printf "
+______  ___              _____            _____ 
+___   |/  /____  ___________(_)_____________  /_
+__  /|_/ /__  / / /_  ___/_  /_  _ \_  __ \  __/
+_  /  / / _  /_/ /_  /   _  / /  __/  / / / /_  
+/_/  /_/  _\__, / /_/    /_/  \___//_/ /_/\__/  
+          /____/                                
+                               Downloader Script
+"
+}
+
+ibenis() {
+benis
+printf "
+  s) Scraping Term
+  d) Download
+  t) TUI
+"
+}
+
+agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.48 Safari/537.36"
+
+please="Please use a option."
+
+url="https://myrient.erista.me/files/"
+
+if [ $(which aria2c >/dev/null; printf "$?") -gt 0 ]; then
+  printf "You are missing a dependency: aria2\n"
+fi
+
+if [ $(which fzf >/dev/null; printf "$?") -gt 0 ]; then
+  printf "You are missing a dependency: fzf"
+fi
+
+if [ $# = 0 ]; then
+  printf "\n$(ibenis)\n\n"; exit
+fi
+
+henis() {
+ curl -sA "$agent" "$wombo" \
+   | grep "href=" \
+   | grep -i "$combo" \
+   | awk -v w="$wombo" '{gsub(/<tr><td class="link"><a href="/, w); split($0, a, "\""); print a[1]}' \
+   | grep "$wombo" \
+   | sed '/<tbody>/d; /\/.\//d; /\/..\//d'
+}
+
+check() {
+if [ $(printf "${url: -1}") != / ]; then
+  aria2c "$url"; comdo="$url"; fenis; exit
+fi
+}
+
+check2() {
+printf "\n$(benis)\n\nDoing a check. This May Take A Minute...\n\n"
+str="$(henis)"
+sstr() {
+printf %b "$str\n"
+}
+total_urls="$(sstr | wc -l)"
+trailing_urls="$(grep -c '/$' <(sstr))"
+clear
+if [ $total_urls -gt 0 ] && [ $trailing_urls -eq $total_urls ]; then
+  printf "\n$(benis)\n\nDirectories not supported!\n\n"; exit
+fi
+}
+
+check3() {
+  if [ "$last" = "" ]; then
+printf '
+⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀
+⠸⣿⣿⣶⣤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣶⣿⣿⡏
+⠀⣿⣿⣿⣿⣿⣿⣿⣶⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠀⠀⠀⠀⢀⣾⣿⣿⣿⣿⣦⠀⠀⠀⠀⠀⢠⣄⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⣶⣿⣿⣿⣿⣿⣿⣿⠁
+⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⣄⣀⠀⢀⣴⡟⠀⠀⠀⠀⢠⣟⠛⠛⠛⠛⠛⠛⣣⡀⠀⠀⠀⠀⠹⣷⡀⠀⢀⣠⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠀
+⠀⠀⠉⠛⠛⠛⠻⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⠀⠀⠀⣰⣿⣿⣦⠀⠀⠀⠀⣰⣿⣿⣄⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠿⠛⠛⠛⠉⠁⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠛⠛⠻⠿⣿⣿⡀⠀⠀⣴⣿⣿⣿⣿⣷⡀⠀⣼⣿⣿⣿⣿⣦⠀⠀⠀⣿⣿⡿⠿⠛⠛⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣀⣀⣤⣤⣤⣤⣶⣿⣿⡇⠀⠼⠿⠿⠿⠿⠿⠿⠷⠾⠿⠿⠿⠿⠿⠿⠷⠀⢰⣿⣿⣷⣦⣤⣤⣤⣀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀
+⠀⠀⠀⠀⠈⢿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠛⠉⢁⣹⣿⣿⣿⣶⣄⡀⠀⠀⠀⠀⢠⣆⠀⠀⠀⠀⢀⣠⣴⣿⣿⣿⣿⡀⠉⠙⠻⠿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠘⣿⣿⠿⠟⠛⠉⠁⠀⠀⣀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠀⢀⣾⣿⣆⠀⠀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⠀⠀⠀⠉⠛⠻⠿⣿⣿⠇⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⢀⣠⣾⣿⣿⣿⡿⠋⣸⣿⣿⣿⣿⡿⠃⢀⣾⣿⣿⣿⡄⠀⠿⣿⣿⣿⣿⣯⠈⢿⣿⣿⣿⣷⣤⡀⠀⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⣿⣿⣿⣿⣿⠋⠀⢠⣿⣿⣿⡏⠀⠀⢀⣼⣿⣿⣿⣿⣷⡀⠀⠀⠘⣿⣿⣿⡆⠀⠙⢿⣿⣿⣿⣿⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠻⣿⣿⣿⠟⠁⠀⠀⣾⣿⣿⣿⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿⡿⠂⠀⠀⢿⣿⣿⣿⡀⠀⠀⠙⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠁⠀⠀⠀⣸⣿⣿⣿⡇⠀⢠⣤⡀⠉⢻⣿⣿⣿⠋⠀⣠⣄⠀⠘⣿⣿⣿⣧⠀⠀⠀⠈⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠙⠛⠀⢠⣿⣿⠃⠀⢸⣿⣿⣿⠀⠈⢿⣿⣇⠀⠛⠋⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⠃⠀⠀⢸⣿⣿⣿⠂⠀⠈⢻⣿⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⣿⣿⡿⠿⠿⠿⣿⣿⡆⠀⠀⠈⢿⣿⠃⠀⠀⠰⣿⣿⠿⠿⠿⢿⣿⣿⠗⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⢧⡀⠀⠀⠘⠉⠀⠀⠀⠀⠈⠃⠀⠀⠀⠀⠈⠛⠀⠀⠀⣠⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+'
+   sleep 5
+   clear
+printf '
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣴⠶⠿⠛⠛⠛⠛⠛⠛⠛⠿⠷⣶⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⣠⡾⠟⠛⠛⠛⠿⣦⣄⠀⣠⣴⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⣼⡟⠀⠀⠀⠀⠀⠀⠈⢙⡷⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢰⣿⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣦⠀⠀⠀⠀⠀⠀⠀⠀
+⢸⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡎⠉⢱⡀⠀⠀⠀⠀⡜⠁⠹⡄⠀⠀⠀⠀⠀⠀⠀⠀⠹⣷⡀⠀⠀⠀⠀⠀⠀
+⠈⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⢸⡇⠀⠀⠀⢰⡇⠀⢠⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣷⡀⠀⠀⠀⠀⠀
+⠀⢹⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣶⣿⡇⠀⠀⠀⢸⣿⣶⣾⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣧⠀⠀⠀⠀⠀
+⠀⠀⢻⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⡇⠀⠀⠀⠸⣿⣿⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣆⠀⠀⠀⠀
+⠀⠀⠀⠹⣷⡴⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿⣿⠁⠀⠀⠀⠀⢿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣷⡀⠀⠀
+⠀⠀⠀⠀⢸⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠁⣠⠶⠶⠶⣦⠈⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣷⡀⠀
+⠀⠀⠀⠀⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣠⠖⠒⡄⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣇⠀
+⠀⠀⠀⠀⠘⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠛⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠀
+⠀⠀⠀⠀⠀⢹⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⡟⠀
+⠀⠀⠀⠀⠀⠀⢿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⡿⠁⠀
+⠀⠀⠀⠀⠀⠀⣸⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣨⣿⣿⡛⠛⠉⠀⠀⠀
+⠀⠀⠀⢀⣴⣿⠋⠁⠙⢧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠏⠈⠙⠻⣶⣄⠀⠀⠀
+⠀⢀⣴⣿⠋⠀⠀⠀⠀⠀⠙⢦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠟⠁⠀⠀⠀⠀⠀⢻⣷⡀⠀
+⠀⣾⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠳⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠶⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣿⡀
+⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠲⢦⣤⣤⣀⣀⠀⢀⣀⣠⣤⣤⠶⠛⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⠀⠀
+⠀⠻⣷⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣠⣬⣿⠟⠛⠻⣿⣯⣥⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⡇⠀
+⠀⠀⠀⠉⠛⠛⠿⠿⠶⠶⠶⠶⠶⠿⠿⠿⠟⠛⠛⠋⠉⠀⠀⠀⠀⠀⠉⠉⠛⠛⠻⠿⠿⠿⠶⠶⠶⠶⠶⠾⠿⠋⠀⠀⠀⠀⠀
+'
+   sleep 5
+   clear
+printf '
+⡏⠉⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿
+⣿⠀⠀⠀⠈⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠉⠁⠀⣿
+⣿⣧⡀⠀⠀⠀⠀⠙⠿⠿⠿⠻⠿⠿⠟⠿⠛⠉⠀⠀⠀⠀⠀⣸⣿
+⣿⣿⣷⣄⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿
+⣿⣿⣿⣿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣴⣿⣿⣿⣿
+⣿⣿⣿⡟⠀⠀⢰⣹⡆⠀⠀⠀⠀⠀⠀⣭⣷⠀⠀⠀⠸⣿⣿⣿⣿
+⣿⣿⣿⠃⠀⠀⠈⠉⠀⠀⠤⠄⠀⠀⠀⠉⠁⠀⠀⠀⠀⢿⣿⣿⣿
+⣿⣿⣿⢾⣿⣷⠀⠀⠀⠀⡠⠤⢄⠀⠀⠀⠠⣿⣿⣷⠀⢸⣿⣿⣿
+⣿⣿⣿⡀⠉⠀⠀⠀⠀⠀⢄⠀⢀⠀⠀⠀⠀⠉⠉⠁⠀⠀⣿⣿⣿
+⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿
+⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿
+'
+   sleep 5
+   clear
+printf '
+⠀⠀⠀⣀⣤⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣤⡀⠀⠀⠀
+⠀⣠⣾⡿⠛⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠻⣿⣷⡀⠀
+⢰⣿⡏⠀⠀⠀⣶⣶⣆⠀⠀⣶⣶⠀⢰⣶⡆⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣶⣶⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣿⡄
+⣿⣿⠀⠀⠀⠀⣿⣿⢿⣧⡀⣿⣿⠀⢰⣶⡆⢰⣶⣦⠴⢶⣦⡄⠛⣿⣿⠛⢀⣤⡖⠒⣶⣄⠀⣴⣶⡦⠶⣶⣦⡀⢀⣴⡶⠶⣿⣿⠀⢠⣴⡖⠒⣦⡄⠀⠀⠸⣿⡇
+⣿⣿⠀⠀⠀⠀⣿⣿⠀⢻⣿⣿⣿⠀⢸⣿⡇⢸⣿⡏⠀⠈⣿⣿⠀⣿⣿⠀⢾⣿⡟⠛⠛⠛⠂⣿⣿⡇⠀⢸⣿⡇⢸⣿⡇⠀⣿⣿⠀⣿⣿⠀⠀⣿⣿⠀⠀⢠⣿⡇
+⠸⣿⣇⠀⠀⠀⠿⠿⠀⠀⠹⠿⠿⠀⠸⠿⠇⠸⠿⠇⠀⠠⠿⠿⠀⠿⠿⠀⠈⠻⠧⠤⠿⠟⠀⠿⠿⠇⠀⠸⠿⠇⠘⠿⣧⡤⠿⠿⠀⠘⠿⠧⠴⠿⠋⠀⢀⣾⣿⠃
+⠀⠙⢿⣷⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣴⣿⡿⠁⠀
+⠀⠀⠀⠉⠛⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠛⠉⠀⠀⠀
+
+
+
+62 6F 62 62 79 5F 62 6F 79 34 39
+'
+   sleep 5
+   url="$wombo"
+   last=""
+   tui
+  fi
+}
+
+decode_u() {
+  perl -pe 's/\%([0-9A-Fa-f]{2})/chr(hex($1))/ge'
+}
+
+encode_u() {
+  perl -pe 's/([^A-Za-z0-9\-\._~\/\n!])/sprintf("%%%02X", ord($1))/ge'
+}
+
+tui() {
+  clear
+  while true; do
+  wombo="$url"
+  decode_w="$(printf "%s" "$wombo" | decode_u | sed 's/[][\/.^$*?{}|&]/\\&/g')"
+  url_s="$(printf "%b" "Exit\nBack\nLast\nDownload!\n$(henis)" \
+    | decode_u \
+    | sed "s|^$decode_w|../|g" \
+    | fzf --layout=reverse \
+    | sed "s|^../||g" \
+    | encode_u)"
+  if [ "$url_s" = Back ]; then
+    url="https://myrient.erista.me/files/"
+  elif [ "$url_s" = Last ]; then
+    url="$last"
+    check3
+  elif [ "$url_s" = Exit ]; then
+    exit
+  elif [ "$url_s" = 'Download!' ]; then
+    clear
+    printf "\n$(benis)\n\nJust hit enter if you want to download all.\n\n"
+    read -p "Scraping Term: " -r genis
+    clear
+    combo="$genis"; aria2_fun; exit
+  elif [ -z "$url_s" ]; then
+    :
+  else
+    url="$wombo$url_s"
+    check
+  fi
+    last="$wombo"
+done
+}
+
+dhenis() {
+  printf "\n$(benis)\n\nThis May Take A Minute...\n" 1>&2 && curl -vsA "$agent" $(henis) 2>&1 \
+    | grep -i '< Location:' \
+    | awk '{print $3}' \
+    | tr -d '\r'
+}
+
+aria2_fun() {
+  url="$wombo"
+  check
+  clear
+  check2
+  printf "\n$(benis)\n\nDownloading...\n"
+  aria2c -i <(grep -v '/$' <(sstr))
+  grep '.zip' <(sstr) >/dev/null
+  if [ $? = 0 ]; then
+    comdo='.zip'
+  fi
+fenis
+}
+
+fenis() {
+  if printf "%s" "$comdo" | grep '.zip' >/dev/null; then
+  clear
+  printf "Do you want to extract and remove zip(s)? \
+(y/n) *This will 'EXTRACT' and or 'DELETE' other zip files that may be in the directory*\n\n"
+  read -r gombo
+  case "$gombo" in
+    y|Y) unzip '*.zip' && rm *.zip;;
+    n|N) printf "Ok then.\n";;
+      *) printf "Umm.. ok I'll just pick no...\n";;
+  esac
+  clear
+  printf "Done! :-p\n"
+fi
+}
+
+while getopts "s:d:th" denis; do
+case "$denis" in
+  s) combo="$OPTARG" 
+  ;;
+  d) wombo="$OPTARG"; aria2_fun; exit
+  ;;
+  t) tui; exit
+  ;;
+  h) printf "\n$(ibenis)\n\n"
+  ;;
+  *) printf "\nSorry I didn't get that.\n\n$please\n\n"
+  ;;
+esac  
+done
